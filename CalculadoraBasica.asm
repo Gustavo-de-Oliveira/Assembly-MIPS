@@ -7,6 +7,10 @@
 	msgTb2: .asciiz " = "
 	msgTb3: .asciiz "\n"
 	
+	n1: .float 1.0
+	n0: .float 0.0
+	n11: .float 11.0	
+	
 	msgErroDiv: .asciiz "Não pode-se realizar divisão por 0\n"
 	
 .text
@@ -29,14 +33,16 @@
 		la $a0, msg1
 		syscall
 	
-		# Bloco para receber um inteiro
-		li $v0, 5
+		# Bloco para receber um float
+		li $v0, 6
 		syscall
-		la $t1, 0($v0)
+		mov.s $f1, $f0
 		
 		# Os que recebem apenas um número vem primeiro, pois receberão nas suas "funções"
 		beq $t3, 6, raiz
+		lwc1 $f6, n1
 		beq $t3, 7, tabuada
+		lwc1 $f6, n1
 		beq $t3, 8, fatorial
 		beq $t3, 9, fibonacci
 	
@@ -45,16 +51,16 @@
 		la $a0, msg2
 		syscall
 	
-		# Bloco para receber um inteiro
-		li $v0, 5
+		# Bloco para receber um float
+		li $v0, 6
 		syscall
-		la $t2, 0($v0)
-		li $t4, 1
+		mov.s $f2, $f0
 		
 		beq $t3, 1, soma
 		beq $t3, 2, subtracao
 		beq $t3, 3, multiplicacao
 		beq $t3, 4, divisao
+		lwc1 $f6, n1
 		beq $t3, 5, potencia
 	
 		# Bloco para imprissão de uma string
@@ -64,86 +70,92 @@
 		
 	soma:
 		# Soma	
-		add $t3, $t1, $t2
+		add.s $f3, $f1, $f2
 	
 		# Bloco para imprissão de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 		
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t3)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f3
 		syscall
 		
 		jal main
 	
 	subtracao:
 		# Subtracao	
-		sub $t3, $t1, $t2
+		sub.s $f3, $f1, $f2
 	
 		# Bloco para imprissão de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t3)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f3
 		syscall
 		
 		jal main
 	
 	divisao:
 		# divisao
-		beq $t2, 0, erroDiv
-		div $t3, $t1, $t2
+		lwc1 $f7, n0
+		c.eq.s $f2, $f7
+		bc1t erroDiv
+		
+		div.s $f3, $f1, $f2
 	
 		# Bloco para imprissão de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t3)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f3
 		syscall
 		
 		jal main
 	
 	multiplicacao:
 		# multiplicacao	
-		mul $t3, $t1, $t2
+		mul.s $f3, $f1, $f2
 	
 		# Bloco para imprissão de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t3)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f3
 		syscall
 		
 		jal main
 	potencia:
 		# multiplicacao	
-		mul $t4, $t4, $t1
+		mul.s $f6, $f6, $f1
 		
-		# Subtracao	
-		sub $t2, $t2, 1
+		# Subtracao
+		lwc1 $f7, n1
+		sub.s $f2, $f2, $f7
 		
-		#Se t2 for 0
-		bne $t2, 0, potencia
+		#Se t2 não for 0
+		lwc1 $f8, n0
+		c.eq.s $f2, $f8
+		bc1f potencia
 		
 		# Bloco para imprissão de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t4)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f6
 		syscall
 		
 		jal main
@@ -151,11 +163,11 @@
 	raiz:
 	
 	tabuada:	
-		mul $t3, $t2, $t1
+		mul.s $f3, $f2, $f1
 		
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t1)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f1
 		syscall
 		
 		# Bloco para imprissão de uma string
@@ -163,9 +175,9 @@
 		la $a0, msgTb1
 		syscall
 		
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t2)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f2
 		syscall
 		
 		# Bloco para imprissão de uma string
@@ -173,9 +185,9 @@
 		la $a0, msgTb2
 		syscall
 	
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t3)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f3
 		syscall
 		
 		# Bloco para imprissão de uma string
@@ -183,22 +195,28 @@
 		la $a0, msgTb3
 		syscall
 		
-		add $t2, $t2, 1
-		bne $t2, 11, tabuada
+		add.s $f2, $f2, $f6
+
+		lwc1 $f7, n11
+		c.eq.s $f2, $f7
+		bc1f tabuada
 		
 		jal main
 	
 	fatorial:
-		sub $t2, $t1, 1
-		mul $t3, $t2, $t1
+		sub.s $f2, $f1, $f6
+		mul.s $f3, $f2, $f1
 			loop:
-				sub $t2, $t2, 1
-				mul $t3, $t3, $t2
-				bne $t2, 1, loop
+				sub.s $f2, $f2, $f6
+				mul.s $f3, $f3, $f2
+				
+				lwc1 $f7, n1
+				c.eq.s $f2, $f7
+				bc1f loop
 		
-		# Bloco para impressão de um inteiro
-		li $v0, 1
-		la $a0, ($t3)
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f3
 		syscall
 		
 		jal main
