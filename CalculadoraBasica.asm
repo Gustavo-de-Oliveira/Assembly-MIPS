@@ -161,6 +161,20 @@
 		jal main
 		
 	raiz:
+		# Calcula a raiz quadrada do conteudo de $f4
+		sqrt.s $f2, $f1
+		
+		# Bloco para imprimir mensagem
+		li $v0, 4
+		la $a0, msg4
+		syscall
+	
+		# Bloco para imprimir raiz (float)
+		li $v0, 2
+		mov.d $f12, $f2
+		syscall	
+		
+		jal main
 	
 	tabuada:	
 		mul.s $f3, $f2, $f1
