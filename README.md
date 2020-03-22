@@ -9,5 +9,4 @@ $f2 - Recebe o segundo número float nas operações soma, subtração, multipli
 $f3 - Recebe o resultado das operações soma, subtração, divisão, multiplicação e fatorial
 $f6 - Recebe uma constante 0, 1 ou 11
 $f7 - Recebe uma constante 0, 1 ou 11
-$f8 - Recebe uma constante 0
 $f12 - Recebe o float que vamos imprimir como padrão do sistema
