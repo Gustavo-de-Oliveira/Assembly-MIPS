@@ -1,8 +1,8 @@
 .data
-	msg1: .asciiz "Digite um n˙mero: "
-	msg2: .asciiz "Digite um n˙mero: "
-	msg3: .asciiz "\nDigite o valor da operaÁ„o:\n1-Soma\n2-SubtraÁ„o\n3- MultiplicaÁ„o\n4- Divis„o\n5- Potencia\n6- Raiz Quadrada\n7- Tabuada\n8- Fatorial\n9- Fibonacci\n10- Sair\n"
-	msg4: .asciiz "O resultado È: "
+	msg1: .asciiz "Digite um n√£mero: "
+	msg2: .asciiz "Digite um n√£mero: "
+	msg3: .asciiz "\nDigite o valor da opera√ß√£o:\n1-Soma\n2-Subtra√ß√£o\n3- Multiplica√ß√£o\n4- Divis√£o\n5- Potencia\n6- Raiz Quadrada\n7- Tabuada\n8- Fatorial\n9- Fibonacci\n10- Sair\n"
+	msg4: .asciiz "O resultado √©: "
 	msgTb1: .asciiz " * "
 	msgTb2: .asciiz " = "
 	msgTb3: .asciiz "\n"
@@ -11,12 +11,12 @@
 	n0: .float 0.0
 	n11: .float 11.0	
 	
-	msgErroDiv: .asciiz "N„o pode-se realizar divis„o por 0\n"
+	msgErroDiv: .asciiz "N√£o pode-se realizar divis√£o por 0\n"
 	
 .text
 .globl main
 	main:
-		# Bloco para impress„o de uma string
+		# Bloco para impress√£o de uma string
 		li $v0, 4
 		la $a0, msg3
 		syscall
@@ -28,7 +28,7 @@
 		
 		beq $t3, 10, sair
 		
-		# Bloco para impress„o de uma string
+		# Bloco para impress√£o de uma string
 		li $v0, 4
 		la $a0, msg1
 		syscall
@@ -38,7 +38,7 @@
 		syscall
 		mov.s $f1, $f0
 		
-		# Os que recebem apenas um n˙mero vem primeiro, pois receber„o nas suas "funÁıes"
+		# Os que recebem apenas um n√£mero vem primeiro, pois receber√£o nas suas "fun√£√£es"
 		beq $t3, 6, raiz
 		lwc1 $f6, n1
 		beq $t3, 7, tabuada
@@ -46,7 +46,7 @@
 		beq $t3, 8, fatorial
 		beq $t3, 9, fibonacci
 	
-		# Bloco para impress„o de uma string
+		# Bloco para impress√£o de uma string
 		li $v0, 4
 		la $a0, msg2
 		syscall
@@ -63,7 +63,7 @@
 		lwc1 $f6, n1
 		beq $t3, 5, potencia
 	
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
@@ -72,12 +72,12 @@
 		# Soma	
 		add.s $f3, $f1, $f2
 	
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 		
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f3
 		syscall
@@ -88,12 +88,12 @@
 		# Subtracao	
 		sub.s $f3, $f1, $f2
 	
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f3
 		syscall
@@ -108,12 +108,12 @@
 		
 		div.s $f3, $f1, $f2
 	
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f3
 		syscall
@@ -124,12 +124,12 @@
 		# multiplicacao	
 		mul.s $f3, $f1, $f2
 	
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f3
 		syscall
@@ -143,17 +143,17 @@
 		lwc1 $f7, n1
 		sub.s $f2, $f2, $f7
 		
-		#Se t2 n„o for 0
+		#Se t2 n√£o for 0
 		lwc1 $f8, n0
 		c.eq.s $f2, $f8
 		bc1f potencia
 		
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msg4
 		syscall
 	
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f6
 		syscall
@@ -179,32 +179,32 @@
 	tabuada:	
 		mul.s $f3, $f2, $f1
 		
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f1
 		syscall
 		
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msgTb1
 		syscall
 		
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f2
 		syscall
 		
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msgTb2
 		syscall
 	
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f3
 		syscall
 		
-		# Bloco para impriss„o de uma string
+		# Bloco para impriss√£o de uma string
 		li $v0, 4
 		la $a0, msgTb3
 		syscall
@@ -228,7 +228,7 @@
 				c.eq.s $f2, $f7
 				bc1f loop
 		
-		# Bloco para impress„o de um float
+		# Bloco para impress√£o de um float
 		li $v0, 2
 		mov.s $f12, $f3
 		syscall
@@ -243,7 +243,7 @@
 		syscall
 		
 	erroDiv:
-		# Bloco para impress„o de uma string
+		# Bloco para impress√£o de uma string
 		li $v0, 4
 		la $a0, msgErroDiv
 		syscall
