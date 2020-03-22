@@ -14,6 +14,7 @@ strSubtracao:  .asciiz "\nEstá é uma operação de subtração !"
 strDivisao:  .asciiz "\nEstá é uma operação de divisao !"
 strMultiplicacao: .asciiz "\nEstá é uma operação de multiplicação !"
 strRaiz: .asciiz "\n Está é uma operação de Raiz: "
+strFat: .asciiz "\n Está é uma operação de Fatorial: "
 strErrorDiv: .asciiz "\nNão pode dividir por 0 !"
 strErrorRaiz: .asciiz "Número < 0 !"
 
@@ -62,6 +63,7 @@ ifMenu1:
 	beq $t1, '*', MUTIPLICACAO
 	beq $t1, 'R', RAIZ
 	beq $t1, 'P', POTENCIA
+	beq $t1, 'F', FATORIAL
 	
 	j fim 
 	
@@ -233,7 +235,37 @@ RAIZ:
 	jal printFloat
 	
 	j fim
+	
+FATORIAL:
+	la $a0, strFat # operação de fatorial
+	jal printStr # print	
+	
+	
+	la $a0, strN1
+	jal printStr
+	
+	#leitura primeiro num
+	jal leituraFloat
+	mov.s $f1, $f0
 
+	lwc1 $f6, n1
+	sub.s $f2, $f1, $f6
+	mul.s $f3, $f2, $f1
+			loop:
+				sub.s $f2, $f2, $f6
+				mul.s $f3, $f3, $f2
+				
+				lwc1 $f7, n1
+				c.eq.s $f2, $f7
+				bc1f loop
+		
+		
+	la $a0, strResultado
+	jal printStr
+	jal printFloat
+		
+	j fim
+	
 errorRaiz:
 	la $a0, strErrorRaiz
 	jal printStr
