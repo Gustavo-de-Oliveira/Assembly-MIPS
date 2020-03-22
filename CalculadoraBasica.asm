@@ -7,8 +7,8 @@
 	msgTb2: .asciiz " = "
 	msgTb3: .asciiz "\n"
 	
-	n1: .float 1.0
 	n0: .float 0.0
+	n1: .float 1.0
 	n11: .float 11.0	
 	
 	msgErroDiv: .asciiz "Não pode-se realizar divisão por 0\n"
@@ -161,7 +161,7 @@
 		jal main
 		
 	raiz:
-		# Calcula a raiz quadrada do conteudo de $f4
+		# Calcula a raiz quadrada do conteudo de $f1
 		sqrt.s $f2, $f1
 		
 		# Bloco para imprimir mensagem
@@ -208,7 +208,7 @@
 		li $v0, 4
 		la $a0, msgTb3
 		syscall
-		
+		c.
 		add.s $f2, $f2, $f6
 
 		lwc1 $f7, n11
