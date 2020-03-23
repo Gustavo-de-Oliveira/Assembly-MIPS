@@ -15,12 +15,17 @@ strDivisao:  .asciiz "\nEstá é uma operação de divisao !"
 strMultiplicacao: .asciiz "\nEstá é uma operação de multiplicação !"
 strRaiz: .asciiz "\n Está é uma operação de Raiz: "
 strFat: .asciiz "\n Está é uma operação de Fatorial: "
+strTab: .asciiz "\n Está é uma operação de Tabuada: "
 strErrorDiv: .asciiz "\nNão pode dividir por 0 !"
 strErrorRaiz: .asciiz "Número < 0 !"
 
+msgTb1: .asciiz " * "
+msgTb2: .asciiz " = "
+msgTb3: .asciiz "\n"
 
 n0: .float 0.0
 n1: .float 1.0
+n11: .float 11.0
 
 .text
 .globl main
@@ -64,6 +69,7 @@ ifMenu1:
 	beq $t1, 'R', RAIZ
 	beq $t1, 'P', POTENCIA
 	beq $t1, 'F', FATORIAL
+	beq $t1, 'T', TABUADA
 	
 	j fim 
 	
@@ -235,6 +241,12 @@ RAIZ:
 	jal printFloat
 	
 	j fim
+		
+	
+errorRaiz:
+	la $a0, strErrorRaiz
+	jal printStr
+	j fim
 	
 FATORIAL:
 	la $a0, strFat # operação de fatorial
@@ -266,11 +278,59 @@ FATORIAL:
 		
 	j fim
 	
-errorRaiz:
-	la $a0, strErrorRaiz
-	jal printStr
-	j fim
+TABUADA:
+	la $a0, strTab # operação de tabuada
+	jal printStr # print	
 	
+	
+	la $a0, strN1
+	jal printStr
+	
+	#leitura primeiro num
+	jal leituraFloat
+	mov.s $f1, $f0
+	
+	lwc1 $f6, n1
+	loop_tab:
+		mul.s $f3, $f2, $f1
+		
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f1
+		syscall
+		
+		# Bloco para imprissão de uma string
+		li $v0, 4
+		la $a0, msgTb1
+		syscall
+		
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f2
+		syscall
+		
+		# Bloco para imprissão de uma string
+		li $v0, 4
+		la $a0, msgTb2
+		syscall
+	
+		# Bloco para impressão de um float
+		li $v0, 2
+		mov.s $f12, $f3
+		syscall
+		
+		# Bloco para imprissão de uma string
+		li $v0, 4
+		la $a0, msgTb3
+		syscall
+		
+		add.s $f2, $f2, $f6
+
+		lwc1 $f7, n11
+		c.eq.s $f2, $f7
+		bc1f loop_tab
+		
+	j fim
 
 leitura1char:
 	li $v0, 12 # 8 -> leitura de caracter syscall
