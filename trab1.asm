@@ -1,5 +1,5 @@
 .data
-menuInicial:  .asciiz "Digite sua primeira opção(M|C):  " 
+menuInicial:  .asciiz "\nDigite sua primeira opção(M|C):  " 
 str1:  .asciiz "\nOpção Escolhida (M|C):  " 
 menu1:  .asciiz "\nDigite a operação:  "
 strN1: .asciiz "\nDigite o primeiro numero: "
@@ -33,6 +33,7 @@ n11: .float 11.0
 main:
  	 
  	# MENU inicial #################################################
+ 	MENU_INICIAL:
  	la $a0, menuInicial #primeiro menu
  	jal printStr 
  	jal leitura1char #retorna o char lido em t1
@@ -44,6 +45,7 @@ main:
  	
  	
  	# MENU 1 #################################################
+ 	MENU_OPERACAO:
  	la $a0, menu1 # Primeiro Menu
  	jal printStr 
  	jal leitura1char #retorna o char lido em t1
@@ -70,6 +72,7 @@ ifMenu1:
 	beq $t1, 'P', POTENCIA
 	beq $t1, 'F', FATORIAL
 	beq $t1, 'T', TABUADA
+	beq $t1, 'X', fim
 	
 	j fim 
 	
@@ -97,7 +100,7 @@ ADICAO:
 	jal printStr
 	jal printFloat
 	
-	j fim
+	j MENU_INICIAL
 		
 	
 SUBTRACAO: 
@@ -124,7 +127,7 @@ SUBTRACAO:
 	jal printStr
 	jal printFloat
 	
-	j fim
+	j MENU_INICIAL
 	
 DIVISAO: 
 	la $a0, strDivisao # operação de soma
@@ -154,7 +157,7 @@ DIVISAO:
 	jal printStr
 	jal printFloat
 	
-	j fim
+	j MENU_INICIAL
 	
 	
 POTENCIA: 
@@ -176,9 +179,6 @@ POTENCIA:
 	jal leituraFloat
 	mov.s $f2, $f0
 	
-	
-	
-		
 	lwc1 $f3, n1
 	lwc1 $f7, n1
 	lwc1 $f8, n0
@@ -204,19 +204,40 @@ POTENCIA:
 	jal printStr
 	jal printFloat
 	
-	j fim
+	j MENU_INICIAL
 	
 	
 errorDiv:
 	la $a0, strErrorDiv
 	jal printStr
-	j fim
+	j MENU_OPERACAO
 	
 	
 MUTIPLICACAO:
 	la $a0, strMultiplicacao 
 	jal printStr # print
-	j fim
+	
+	la $a0, strN1
+	jal printStr
+	
+	#leitura primeiro num
+	jal leituraFloat
+	mov.s $f1, $f0
+	
+	la $a0, strN2
+	jal printStr
+	
+	#leitura segundo num
+	jal leituraFloat
+	mov.s $f2, $f0
+	
+	mul.s $f3, $f1, $f2
+	
+	la $a0, strResultado
+	jal printStr
+	jal printFloat
+	
+	j MENU_INICIAL
 	
 RAIZ: 
 	la $a0, strRaiz # operação de soma
@@ -240,13 +261,13 @@ RAIZ:
 	jal printStr
 	jal printFloat
 	
-	j fim
+	j MENU_INICIAL
 		
 	
 errorRaiz:
 	la $a0, strErrorRaiz
 	jal printStr
-	j fim
+	j MENU_OPERACAO
 	
 FATORIAL:
 	la $a0, strFat # operação de fatorial
@@ -276,7 +297,8 @@ FATORIAL:
 	jal printStr
 	jal printFloat
 		
-	j fim
+	j MENU_INICIAL
+	
 	
 TABUADA:
 	la $a0, strTab # operação de tabuada
@@ -300,9 +322,8 @@ TABUADA:
 		syscall
 		
 		# Bloco para imprissão de uma string
-		li $v0, 4
-		la $a0, msgTb1
-		syscall
+		la $a0,msgTb1
+		jal printStr
 		
 		# Bloco para impressão de um float
 		li $v0, 2
@@ -310,19 +331,15 @@ TABUADA:
 		syscall
 		
 		# Bloco para imprissão de uma string
-		li $v0, 4
-		la $a0, msgTb2
-		syscall
+		la $a0,msgTb2
+		jal printStr
 	
 		# Bloco para impressão de um float
-		li $v0, 2
-		mov.s $f12, $f3
-		syscall
+		jal printFloat
 		
 		# Bloco para imprissão de uma string
-		li $v0, 4
-		la $a0, msgTb3
-		syscall
+		la $a0,msgTb3
+		jal printStr
 		
 		add.s $f2, $f2, $f6
 
@@ -330,7 +347,7 @@ TABUADA:
 		c.eq.s $f2, $f7
 		bc1f loop_tab
 		
-	j fim
+	j MENU_INICIAL
 
 leitura1char:
 	li $v0, 12 # 8 -> leitura de caracter syscall
