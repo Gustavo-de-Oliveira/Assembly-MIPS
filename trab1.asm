@@ -16,9 +16,10 @@ strMultiplicacao: .asciiz "\nEstá é uma operação de multiplicação !"
 strRaiz: .asciiz "\n Está é uma operação de Raiz: "
 strFat: .asciiz "\n Está é uma operação de Fatorial: "
 strTab: .asciiz "\n Está é uma operação de Tabuada: "
+strFibo: .asciiz "\n Está é uma operação de Fibonacci: "
 strErrorDiv: .asciiz "\nNão pode dividir por 0 !"
 strErrorRaiz: .asciiz "Número < 0 !"
-
+msg: .asciiz " "
 msgTb1: .asciiz " * "
 msgTb2: .asciiz " = "
 msgTb3: .asciiz "\n"
@@ -57,7 +58,7 @@ main:
  	
  	jal ifMenu1 # print do CHAR digitado
  	
- 	j fim 
+ 	j FIM
  	
 
 #Podemos comparar o valor de $v0 com algum caracter
@@ -72,9 +73,11 @@ ifMenu1:
 	beq $t1, 'P', POTENCIA
 	beq $t1, 'F', FATORIAL
 	beq $t1, 'T', TABUADA
-	beq $t1, 'X', fim
+	beq $t1, 'I', FIBONACCI
+	beq $t1, 'X', FIM
+	beq $t1, 'V', MENU_INICIAL
 	
-	j fim 
+	j FIM
 	
 ADICAO: 
 	la $a0, strAdicao # operação de soma
@@ -193,7 +196,7 @@ POTENCIA:
 			mul.s $f3, $f3, $f1 #f3 -> 2 * 2 * 2
 			sub.s $f2, $f2, $f7 #f2 ->  0
 		
-			#Se t2 n�o for 0
+			#Se t2 não for 0
 		
 			c.eq.s $f2, $f8	
 		bc1f loop_potencia
@@ -210,7 +213,7 @@ POTENCIA:
 errorDiv:
 	la $a0, strErrorDiv
 	jal printStr
-	j MENU_OPERACAO
+	j DIVISAO
 	
 	
 MUTIPLICACAO:
@@ -307,7 +310,7 @@ TABUADA:
 	
 	la $a0, strN1
 	jal printStr
-	
+
 	#leitura primeiro num
 	jal leituraFloat
 	mov.s $f1, $f0
@@ -348,6 +351,60 @@ TABUADA:
 		bc1f loop_tab
 		
 	j MENU_INICIAL
+
+FIBONACCI:
+	li $v0, 4
+		la $a0, strFibo
+		syscall
+		
+		li $v0, 4
+		la $a0, strN1
+		syscall
+	
+		li $v0, 5# Pede p/ ler inteiro
+		syscall  # chama para ler
+		
+		la  $t1, 0($v0)  # carrega o inteiro lido em $t1
+
+		li $v0, 4
+		la $a0, strN2
+		syscall
+	
+		li $v0, 5# Pede p/ ler inteiro
+		syscall  # chama para ler
+		
+		la  $t2, 0($v0)  # carrega o inteiro lido em $t2
+		
+		#int fib0 = 0;
+		li $t3, 0
+		
+		#int fib1 = 1; 
+		li $t4, 1
+		
+		#int aux = 0; 
+		li $t5, 0
+		
+		fibo_loop:
+		blt $t2, $t4, MENU_INICIAL # se b > fib0 o laço acaba
+	
+		la $t5, ($t4)     # aux = fib1
+		add $t4, $t4, $t3 # fib1 = fib1 + fib0
+		la $t3, ($t5)     # fib0 = aux
+	
+		bge $t3, $t1, if 
+	
+		j fibo_loop # jump back to the top
+
+		if:
+			#imprime fib0
+			li $v0, 1	# código para imprimir um inteiro
+			la $a0, ($t3)	# avisa para imprimir
+			syscall		# executa a chamado do SO para imprimir
+			li $v0, 4
+			la $a0, msg
+			syscall
+			j fibo_loop # Volta ao topo
+			
 
 leitura1char:
 	li $v0, 12 # 8 -> leitura de caracter syscall
@@ -392,7 +449,7 @@ save$a0$t2:
 	move $a0, $t2   
 	jr $ra
 	
-fim:
+FIM:
 	li $v0, 10
 	syscall
 	
