@@ -6,6 +6,8 @@ strN1: .asciiz "\nDigite o primeiro numero: "
 strN2: .asciiz "Digite o segundo numero: "
 strResultado: .asciiz "O resultado: "
 strMenu2: .asciiz "\nEscolha uma das três memórias: "
+strShowM: .asciiz "\nMemória "
+strE: .asciiz " é: "
 
 
 teste:  .asciiz " STRING DE TESTE !"
@@ -129,18 +131,47 @@ saveM1:
 	j MENU_INICIAL
 	
 showM1:
+	la $a0, strShowM  #memoria
+ 	jal printStr
+ 	  
+ 	move $a0, $t1  #n memoria
+ 	jal printChar
+ 	
+ 	la $a0, strE  #é
+ 	jal printStr
+
 	mov.s $f3, $f5
 	jal printFloat
 
 	j MENU_INICIAL
 	
 showM2:
+	la $a0, strShowM  #memoria
+ 	jal printStr
+ 	
+ 	move $a0, $t1 #n memoria
+ 	jal printChar
+ 	
+ 	la $a0, strE  #é
+ 	jal printStr
+	
+	
 	mov.s $f3, $f6
 	jal printFloat
 
 	j MENU_INICIAL
 	
 showM3:
+	
+	la $a0, strShowM  #memoria
+ 	jal printStr
+ 	
+ 	move $a0, $t1 #n memoria
+ 	jal printChar
+ 	
+ 	la $a0, strE  #é
+ 	jal printStr
+	
 	mov.s $f3, $f7
 	jal printFloat
 
