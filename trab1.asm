@@ -5,6 +5,7 @@ menu1:  .asciiz "\nDigite a operação:  "
 strN1: .asciiz "\nDigite o primeiro numero: "
 strN2: .asciiz "Digite o segundo numero: "
 strResultado: .asciiz "O resultado: "
+strMenu2: .asciiz "\nEscolha uma das três memórias: "
 
 
 teste:  .asciiz " STRING DE TESTE !"
@@ -24,6 +25,11 @@ msgTb1: .asciiz " * "
 msgTb2: .asciiz " = "
 msgTb3: .asciiz "\n"
 
+
+strM1: .asciiz "\n Salvando operação na menória 1 (s1)"
+strM2: .asciiz "\n Salvando operação na menória 2 (s2)"
+strM3: .asciiz "\n Salvando operação na menória 3 (s3)"
+
 n0: .float 0.0
 n1: .float 1.0
 n11: .float 11.0
@@ -32,7 +38,15 @@ n11: .float 11.0
 .globl main
 
 main:
- 	 
+ 	# variáveis para o switch da memória
+ 	li $t5, 1
+	li $t6, 0
+	li $t7, 0
+	
+	lwc1 $f5, n11
+	lwc1 $f6, n0
+	lwc1 $f7, n0
+	
  	# MENU inicial #################################################
  	MENU_INICIAL:
  	la $a0, menuInicial #primeiro menu
@@ -44,6 +58,7 @@ main:
  	move $a0, $t1 #move de volta o char para A0
  	jal printChar # print do CHAR digitado
  	
+ 	beq $a0, 'M', ifMenu2
  	
  	# MENU 1 #################################################
  	MENU_OPERACAO:
@@ -56,7 +71,8 @@ main:
  	move $a0, $t1 #move o que esta em T1 para A0
  	jal printChar # print do CHAR digitado
  	
- 	jal ifMenu1 # print do CHAR digitado
+ 	beq $a0, 'C', ifMenu1
+
  	
  	j FIM
  	
@@ -64,7 +80,20 @@ main:
 #Podemos comparar o valor de $v0 com algum caracter
 
 
+ifMenu2:
+	la $a0, strMenu2 # print opção escolhida
+ 	jal printStr
+ 	jal leitura1char #retorna o char lido em t1
+	
+	beq $t1, '1', showM1
+	beq $t1, '2', showM2
+	beq $t1, '3', showM3
+
+	j FIM
+	
 ifMenu1:
+
+
 	beq $t1, '+', ADICAO
 	beq $t1, '-', SUBTRACAO
 	beq $t1, '/', DIVISAO
@@ -78,6 +107,71 @@ ifMenu1:
 	beq $t1, 'V', MENU_INICIAL
 	
 	j FIM
+	
+ifMemoria:
+	beq $t5, 1, saveM1
+	beq $t6, 1, saveM2
+	beq $t7, 1, saveM3
+	j FIM
+	
+saveM1:
+
+	la $a0, strM1 # Print Salvando m1
+ 	jal printStr 
+ 	
+	mov.s $f5, $f3
+	
+	li $t5, 0
+	li $t6, 1
+	li $t7, 0
+ 	 
+		
+	j MENU_INICIAL
+	
+showM1:
+	mov.s $f3, $f5
+	jal printFloat
+
+	j MENU_INICIAL
+	
+showM2:
+	mov.s $f3, $f6
+	jal printFloat
+
+	j MENU_INICIAL
+	
+showM3:
+	mov.s $f3, $f7
+	jal printFloat
+
+	j MENU_INICIAL
+	
+saveM2:
+
+	la $a0, strM2 # Print Salvando m2
+ 	jal printStr 
+ 	
+	mov.s $f6, $f3
+	li $t5, 0
+	li $t6, 0
+	li $t7, 1
+ 	 
+	
+	j MENU_INICIAL
+	
+saveM3:
+
+	la $a0, strM3 # Print Salvando m3
+ 	jal printStr 
+ 	
+	mov.s $f7, $f3
+	li $t5, 1
+	li $t6, 0
+	li $t7, 0
+	
+	j MENU_INICIAL
+	
+	
 	
 ADICAO: 
 	la $a0, strAdicao # operação de soma
@@ -103,7 +197,7 @@ ADICAO:
 	jal printStr
 	jal printFloat
 	
-	j MENU_INICIAL
+	jal ifMemoria
 		
 	
 SUBTRACAO: 
@@ -130,7 +224,7 @@ SUBTRACAO:
 	jal printStr
 	jal printFloat
 	
-	j MENU_INICIAL
+	jal ifMemoria
 	
 DIVISAO: 
 	la $a0, strDivisao # operação de soma
@@ -160,7 +254,7 @@ DIVISAO:
 	jal printStr
 	jal printFloat
 	
-	j MENU_INICIAL
+	jal ifMemoria
 	
 	
 POTENCIA: 
@@ -207,7 +301,7 @@ POTENCIA:
 	jal printStr
 	jal printFloat
 	
-	j MENU_INICIAL
+	jal ifMemoria
 	
 	
 errorDiv:
@@ -240,7 +334,7 @@ MUTIPLICACAO:
 	jal printStr
 	jal printFloat
 	
-	j MENU_INICIAL
+	jal ifMemoria
 	
 RAIZ: 
 	la $a0, strRaiz # operação de soma
@@ -253,9 +347,10 @@ RAIZ:
 	jal leituraFloat
 	mov.s $f1, $f0
 	
+	
+	lwc1 $f10, n0
 	#if (F1 < 0)
-	lwc1 $f7, n0
-	c.lt.s $f1, $f7
+	c.lt.s $f1, $f10
 	bc1t  errorRaiz
 	
 	sqrt.s $f3, $f1	
@@ -264,8 +359,7 @@ RAIZ:
 	jal printStr
 	jal printFloat
 	
-	j MENU_INICIAL
-		
+	jal ifMemoria
 	
 errorRaiz:
 	la $a0, strErrorRaiz
@@ -284,15 +378,15 @@ FATORIAL:
 	jal leituraFloat
 	mov.s $f1, $f0
 
-	lwc1 $f6, n1
-	sub.s $f2, $f1, $f6
+	lwc1 $f10, n1
+	sub.s $f2, $f1, $f10
 	mul.s $f3, $f2, $f1
 			loop:
-				sub.s $f2, $f2, $f6
+				sub.s $f2, $f2, $f10
 				mul.s $f3, $f3, $f2
 				
-				lwc1 $f7, n1
-				c.eq.s $f2, $f7
+				lwc1 $f11, n1
+				c.eq.s $f2, $f11
 				bc1f loop
 		
 		
@@ -300,8 +394,7 @@ FATORIAL:
 	jal printStr
 	jal printFloat
 		
-	j MENU_INICIAL
-	
+	jal ifMemoria	
 	
 TABUADA:
 	la $a0, strTab # operação de tabuada
@@ -315,7 +408,10 @@ TABUADA:
 	jal leituraFloat
 	mov.s $f1, $f0
 	
-	lwc1 $f6, n1
+	lwc1 $f10, n1
+	lwc1 $f2, n0
+	lwc1 $f11, n11
+	
 	loop_tab:
 		mul.s $f3, $f2, $f1
 		
@@ -344,13 +440,12 @@ TABUADA:
 		la $a0,msgTb3
 		jal printStr
 		
-		add.s $f2, $f2, $f6
+		add.s $f2, $f2, $f10
 
-		lwc1 $f7, n11
-		c.eq.s $f2, $f7
+		c.eq.s $f2, $f11
 		bc1f loop_tab
 		
-	j MENU_INICIAL
+	jal ifMemoria
 
 FIBONACCI:
 	li $v0, 4
@@ -382,14 +477,14 @@ FIBONACCI:
 		li $t4, 1
 		
 		#int aux = 0; 
-		li $t5, 0
+		li $a1, 0
 		
 		fibo_loop:
-		blt $t2, $t4, MENU_INICIAL # se b > fib0 o laço acaba
+		blt $t2, $t4, fim_fibonacci # se b > fib0 o laço acaba
 	
-		la $t5, ($t4)     # aux = fib1
+		la $a1, ($t4)     # aux = fib1
 		add $t4, $t4, $t3 # fib1 = fib1 + fib0
-		la $t3, ($t5)     # fib0 = aux
+		la $t3, ($a1)     # fib0 = aux
 	
 		bge $t3, $t1, if 
 	
@@ -405,6 +500,16 @@ FIBONACCI:
 			syscall
 			j fibo_loop # Volta ao topo
 			
+fim_fibonacci:	
+	jal convert_int_float
+	jal ifMemoria	
+	
+
+convert_int_float:	
+	sw   $t3, -88($fp)
+	lwc1 $f3, -88($fp)
+	cvt.s.w $f3, $f3
+	
 
 leitura1char:
 	li $v0, 12 # 8 -> leitura de caracter syscall
