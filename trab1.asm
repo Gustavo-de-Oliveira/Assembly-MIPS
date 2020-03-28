@@ -9,7 +9,6 @@ strMenu2: .asciiz "\nEscolha uma das três memórias: "
 strShowM: .asciiz "\nMemória "
 strE: .asciiz " é: "
 
-
 teste:  .asciiz " STRING DE TESTE !"
 strAdicao:  .asciiz "\nEstá é uma operação de soma !"
 strPotencia:  .asciiz "\nEstá é uma operação de potencia !"
@@ -80,8 +79,6 @@ main:
  	
 
 #Podemos comparar o valor de $v0 com algum caracter
-
-
 ifMenu2:
 	la $a0, strMenu2 # print opção escolhida
  	jal printStr
