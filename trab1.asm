@@ -72,7 +72,8 @@ main:
  	move $a0, $t1 #move o que esta em T1 para A0
  	jal printChar # print do CHAR digitado
  	
- 	beq $a0, 'C', ifMenu1
+ 	#beq $a0, 'C', ifMenu1
+ 	j ifMenu1
 
  	
  	j FIM
@@ -307,7 +308,6 @@ POTENCIA:
 	lwc1 $f3, n1
 	lwc1 $f7, n1
 	lwc1 $f8, n0
-	
 	
 	c.eq.s $f2, $f8	
 	bc1t fimPotencia
