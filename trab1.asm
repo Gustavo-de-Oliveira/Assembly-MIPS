@@ -11,6 +11,11 @@ strRaiz: .asciiz "\n Está é uma operação de Raiz: "
 strPotencia:  .asciiz "\nEstá é uma operação de potencia !"
 strFat: .asciiz "\n Está é uma operação de Fatorial: "
 strTab: .asciiz "\n Está é uma operação de Tabuada: "
+#mensagens da tabuada
+msg: .asciiz " "
+msgTb1: .asciiz " * "
+msgTb2: .asciiz " = "
+msgTb3: .asciiz "\n"
 
 # Digite o primeiro/segundo numero
 strN1: .asciiz "\nDigite o primeiro numero: "
@@ -29,10 +34,7 @@ strE: .asciiz " é: "
 
 strFibo: .asciiz "\n Está é uma operação de Fibonacci: "
 
-msg: .asciiz " "
-msgTb1: .asciiz " * "
-msgTb2: .asciiz " = "
-msgTb3: .asciiz "\n"
+
 
 
 strM1: .asciiz "\n Salvando operação na menória 1 (s1)"
@@ -462,7 +464,8 @@ erroFat:
 	la $a0, strErrorFatorial
 	jal printStr
 	j ifMenu1
-	
+
+#faz a operação de fatorial e devolve o resultado em F3	(o último dos resultados (f1 * 10))
 TABUADA:
 	la $a0, strTab # operação de tabuada
 	jal printStr # print	
@@ -478,34 +481,36 @@ TABUADA:
 	lwc1 $f11, n11
 	
 	loop_tab:
+		#OP de multiplicação
 		mul.s $f3, $f2, $f1
 		
-		# Bloco para impressão de um float
-		mov.s $f12, $f3
+		
+		#Guardando F3 para não perder o valor
+		mov.s $f13, $f3
 		mov.s $f3, $f1
+		#Print de f1
 		jal printFloat
 	
-		mov.s $f3, $f12
 		
-		# Bloco para imprissão de uma string
+		# Printando o sinal de *
 		la $a0,msgTb1
 		jal printStr
 		
-		# Bloco para impressão de um float
-		
+		# Printando o contador
 		mov.s $f3, $f2
 		jal printFloat
 		
-		mov.s $f3 $f12
+		# Retornando o valor do resultado para F3
+		mov.s $f3 $f13
 		
-		# Bloco para imprissão de uma string
+		# Print =
 		la $a0,msgTb2
 		jal printStr
 	
-		# Bloco para impressão de um float
+		# Print do resultado
 		jal printFloat
 		
-		# Bloco para imprissão de uma string
+		# Print \n pra ficar bonitinho :)
 		la $a0,msgTb3
 		jal printStr
 		
