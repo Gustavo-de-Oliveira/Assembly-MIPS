@@ -9,6 +9,8 @@ strMultiplicacao: .asciiz "\nEstá é uma operação de multiplicação !"
 strDivisao:  .asciiz "\nEstá é uma operação de divisao !"
 strRaiz: .asciiz "\n Está é uma operação de Raiz: "
 strPotencia:  .asciiz "\nEstá é uma operação de potencia !"
+strFat: .asciiz "\n Está é uma operação de Fatorial: "
+strTab: .asciiz "\n Está é uma operação de Tabuada: "
 
 # Digite o primeiro/segundo numero
 strN1: .asciiz "\nDigite o primeiro numero: "
@@ -25,9 +27,6 @@ strShowM: .asciiz "\nMemória "
 strE: .asciiz " é: "
 
 
-
-strFat: .asciiz "\n Está é uma operação de Fatorial: "
-strTab: .asciiz "\n Está é uma operação de Tabuada: "
 strFibo: .asciiz "\n Está é uma operação de Fibonacci: "
 
 msg: .asciiz " "
@@ -334,6 +333,7 @@ RAIZ:
 	
 	jal ifMemoria
 	
+# caso < 0, erro na raiz	
 errorRaiz:
 	la $a0, strErrorRaiz
 	jal printStr
@@ -424,28 +424,21 @@ FATORIAL:
 	
 	lwc1 $f2, n0
 	
-	c.eq.s $f1, $f2 #compara se a entrada é 0 (0! == 1)
+	c.eq.s $f1, $f2 #compara se a entrada é  (f1 != 0)
 	bc1f fatorialDiferenteDe0
 	lwc1 $f1, n1 # fatorial == 1
-	
+
 fatorialDiferenteDe0:
 	c.lt.s $f1, $f2 #compara se a entrada < 0 
 	bc1t erroFat
-	
-	
+
 	lwc1 $f10, n1
 	mov.s $f3, $f1
 	mov.s $f2, $f1
 	
-	############################
-	
-	
-	# ERRO NO FATORIAL DE 1 NÃO TA CAINDO NO IF DE BAIXO
-	
-	###################
 	
 	c.eq.s $f1, $f10 #compara se a entrada é um
-	bc1f respFatorial
+	bc1t respFatorial
 	
 	
 		loop:
@@ -463,7 +456,8 @@ fatorialDiferenteDe0:
 	jal printFloat
 		
 	jal ifMemoria	
-
+	
+# caso < 0, erro o fatorial
 erroFat:
 	la $a0, strErrorFatorial
 	jal printStr
@@ -474,11 +468,9 @@ TABUADA:
 	jal printStr # print	
 	
 	
-	la $a0, strN1
+	la $a0, strN1 # Digite o primeiro numero
 	jal printStr
-
-	#leitura primeiro num
-	jal leituraFloat
+	jal leituraFloat #leitura primeiro num
 	mov.s $f1, $f0
 	
 	lwc1 $f10, n1
@@ -489,18 +481,22 @@ TABUADA:
 		mul.s $f3, $f2, $f1
 		
 		# Bloco para impressão de um float
-		li $v0, 2
-		mov.s $f12, $f1
-		syscall
+		mov.s $f12, $f3
+		mov.s $f3, $f1
+		jal printFloat
+	
+		mov.s $f3, $f12
 		
 		# Bloco para imprissão de uma string
 		la $a0,msgTb1
 		jal printStr
 		
 		# Bloco para impressão de um float
-		li $v0, 2
-		mov.s $f12, $f2
-		syscall
+		
+		mov.s $f3, $f2
+		jal printFloat
+		
+		mov.s $f3 $f12
 		
 		# Bloco para imprissão de uma string
 		la $a0,msgTb2
@@ -596,7 +592,7 @@ leituraFloat:
  	syscall
  	jr $ra 
  	
- #print do que tem no registrador $F12	
+ #print do que tem no registrador $F3	
 printFloat:
 	mov.s $f12, $f3
 	li $v0, 2
