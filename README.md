@@ -2,7 +2,11 @@
 Trabalhos e exercícios da matéria Organização de Computadores
 
 # Registradores
+$t1 - Recebe M ou C no inicio das operações, dos registradores de memória e das operações a depender do que foi escolhido pelo usuário
 $t3 - Recebe um inteiro pra operação a ser realizada
+$t5, $t6 e $t7 - Recebem os operadores de memória
+$s5, $s6 e $s7 - Recebem os status das memórias
+
 $f0 - Recebe o número float como padrão do sistema
 $f1 - Recebe o primeiro número float
 $f2 - Recebe o segundo número float nas operações soma, subtração, multiplicação, divisão e potência
@@ -11,12 +15,3 @@ $f6 - Recebe uma constante 0, 1 ou 11
 $f7 - Recebe uma constante 0, 1 ou 11
 $f8 - Recebe uma constante 0, 1 ou 11
 $f12 - Recebe o float que vamos imprimir como padrão do sistema
-
-#UPDATES A REVER
-A tabuada ficou com um formato um pouco diferente, não dava pra printar com as funções e precisei criar strings pra deixar parecido com uma tabuada
-
-O loop do fim de cada operação direciona pro menu inicial, onde escolhe M ou C
-
-Os de erro direcionam pro menu de operação
-
-O 'X' na operação fecha o programa 
