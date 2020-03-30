@@ -25,3 +25,5 @@ $f7 - Recebe uma constante 0, 1 ou 11
 $f8 - Recebe uma constante 0, 1 ou 11
 
 $f12 - Recebe o float que vamos imprimir como padrão do sistema
+
+Tipos de dados são string, chars, floats, single precision e integer

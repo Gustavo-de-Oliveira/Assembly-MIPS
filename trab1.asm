@@ -66,6 +66,7 @@ strM1: .asciiz "\nSalvando operação na menória 1 (f5)"
 strM2: .asciiz "\nSalvando operação na menória 2 (f6)"
 strM3: .asciiz "\nSalvando operação na menória 3 (f7)"
 
+# Constantes
 n0: .float 0.0
 n1: .float 1.0
 n11: .float 11.0
@@ -157,7 +158,7 @@ showM1:
  	move $a0, $t1  #n memoria
  	jal printChar
  	
- 	la $a0, strE  #é
+ 	la $a0, strE  #é:
  	jal printStr
 
 	mov.s $f3, $f5
@@ -174,7 +175,7 @@ showM2:
  	move $a0, $t1 #n memoria
  	jal printChar
  	
- 	la $a0, strE  #é
+ 	la $a0, strE  #é:
  	jal printStr
 	
 	
@@ -193,7 +194,7 @@ showM3:
  	move $a0, $t1 #n memoria
  	jal printChar
  	
- 	la $a0, strE  #é
+ 	la $a0, strE  #é: 
  	jal printStr
 	
 	mov.s $f3, $f7
