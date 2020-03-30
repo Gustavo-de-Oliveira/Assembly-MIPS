@@ -8,7 +8,7 @@ menuInicial:  .asciiz "\nDigite sua opção(C -> Calculadora | M -> memória):  
 strCalculadora: .asciiz "\nVocê está na calculadora ! \nDigite alguma das opções (+ -> SOMA | - -> subtração | / -> DIVISAO | * -> MULTIPLICAÇÃO | R -> Raiz | P -> Potenciação  | T -> TABUADA | F -> FATORIAL |  I -> FIBONACCI |  V -> Voltar |  X -> FIM): " 
 strMemorias: .asciiz "\nEscolha uma das três memórias (1 | 2 | 3 | V para voltar): M"
 
-#opções da calculadora
+# Opções da calculadora
 strAdicao:  .asciiz "\nEstá é uma operação de soma !"
 strSubtracao:  .asciiz "\nEstá é uma operação de subtração !"
 strMultiplicacao: .asciiz "\nEstá é uma operação de multiplicação !"
@@ -18,7 +18,7 @@ strPotencia:  .asciiz "\nEstá é uma operação de potencia !"
 strFat: .asciiz "\n Está é uma operação de Fatorial: "
 strTab: .asciiz "\n Está é uma operação de Tabuada: "
 strFibo: .asciiz "\n Está é uma operação de Fibonacci: "
-#mensagens da tabuada
+# Mensagens da tabuada
 	msg: .asciiz " "
 	msgTb1: .asciiz " * "
 	msgTb2: .asciiz " = "
@@ -32,7 +32,7 @@ strN2: .asciiz "Digite o segundo numero: "
 # String de Resultado
 strResultado: .asciiz "O resultado: "
 
-# mensagens de erro
+# Mensagens de erro
 strErrorDiv: .asciiz "Não pode dividir por 0 !" #erro na divisão
 strErrorRaiz: .asciiz "Raiz de número negativo não existe ! Tente de Novo !"  #erro na raiz
 strErrorFatorial: .asciiz "Fatorial de número negativo não existe ! Tente de Novo !"  #erro fatorial
@@ -42,7 +42,7 @@ strErrorFatorial: .asciiz "Fatorial de número negativo não existe ! Tente de N
 strShowM: .asciiz "\nMemória "
 strE: .asciiz " é: "
 
-#memoria vazia
+# Memoria vazia
 strMemoriaVazia: .asciiz "\nMemória Vazia !"
 
 
@@ -60,12 +60,12 @@ n1Negativo: .float -1.0
 .globl main
 
 main:
- 	# variáveis para o switch da memória
- 	li $t5, 1 #indica que a primeira memória recebe valor
+ 	# Variáveis para o switch da memória
+ 	li $t5, 1 # Indica que a primeira memória recebe valor
 	li $t6, 0
 	li $t7, 0
 	
-	# variáveis para indicar se existe valor na memória
+	# Variáveis para indicar se existe valor na memória
 	li $s5, 0 
 	li $s6, 0
 	li $s7, 0
@@ -76,9 +76,9 @@ main:
 	
  	# MENU inicial #################################################
  	MENU_INICIAL:
- 	la $a0, menuInicial #Digite sua opção (C -> Calculadora | M -> memória): 
- 	jal printStr #printa a string em A0
- 	jal leitura1char #retorna o char lido em t1
+ 	la $a0, menuInicial # Digite sua opção (C -> Calculadora | M -> memória): 
+ 	jal printStr # Printa a string em A0
+ 	jal leitura1char # Retorna o char lido em t1
  	beq $t1, 'M', ifMenu2
  	beq $t1, 'C', ifMenu1
 
@@ -86,10 +86,10 @@ main:
  	
 
 ifMenu2:
-	la $a0, strMemorias # escolha uma das memórias
+	la $a0, strMemorias # Escolha uma das memórias
  	jal printStr
  	
- 	jal leitura1char #retorna o char lido em t1
+ 	jal leitura1char # Retorna o char lido em t1
 	
 	beq $t1, '1', showM1
 	beq $t1, '2', showM2
@@ -100,9 +100,9 @@ ifMenu2:
 ifMenu1:
 	la $a0, strCalculadora # "Você está na calculadora -> Digite a opção"
  	jal printStr 
- 	jal leitura1char #retorna o char lido em t1
+ 	jal leitura1char # Retorna o char lido em t1
 
-	#opções calculadora
+	# Opções calculadora
 	beq $t1, '+', ADICAO 
 	beq $t1, '-', SUBTRACAO
 	beq $t1, '/', DIVISAO
@@ -116,7 +116,7 @@ ifMenu1:
 	beq $t1, 'V', MENU_INICIAL
 	
 	
-	#termina o programa caso o usuário não escolha uma opção correta
+	# Termina o programa caso o usuário não escolha uma opção correta
 	j FIM
 	
 ifMemoria:
@@ -136,13 +136,13 @@ showM1:
 	
 	beqz $s5, MEMORIA_VAZIA
 	
-	la $a0, strShowM  #memoria
+	la $a0, strShowM  # Memoria
  	jal printStr
  	  
- 	move $a0, $t1  #n memoria
+ 	move $a0, $t1  # n memoria
  	jal printChar
  	
- 	la $a0, strE  #é:
+ 	la $a0, strE  # é:
  	jal printStr
 
 	mov.s $f3, $f5
@@ -153,13 +153,13 @@ showM1:
 showM2:
 	beq $s6, 0, MEMORIA_VAZIA
 
-	la $a0, strShowM  #memoria
+	la $a0, strShowM  # Memoria
  	jal printStr
  	
- 	move $a0, $t1 #n memoria
+ 	move $a0, $t1 # n memoria
  	jal printChar
  	
- 	la $a0, strE  #é:
+ 	la $a0, strE  # é:
  	jal printStr
 	
 	
@@ -172,13 +172,13 @@ showM3:
 
 	beq $s7, 0, MEMORIA_VAZIA
 	
-	la $a0, strShowM  #memoria
+	la $a0, strShowM  # Memoria
  	jal printStr
  	
- 	move $a0, $t1 #n memoria
+ 	move $a0, $t1 # n memoria
  	jal printChar
  	
- 	la $a0, strE  #é: 
+ 	la $a0, strE  # é: 
  	jal printStr
 	
 	mov.s $f3, $f7
@@ -186,50 +186,50 @@ showM3:
 
 	j ifMenu2
 	
-#salva na m1	
+# Salva na m1	
 saveM1:
 
-	li $s5, 1 #troca o status de memoria vazia
+	li $s5, 1 # Troca o status de memoria vazia
 
 	la $a0, strM1 # Print Salvando m1
  	jal printStr 
  	
 	mov.s $f5, $f3
 	
-	li $t5, 0 #troca os status da proxima memória à ser utilizada
+	li $t5, 0 # Troca os status da proxima memória à ser utilizada
 	li $t6, 1
 	li $t7, 0
  	 
 		
 	j MENU_INICIAL
 	
-#salva na m2	
+# Salva na m2	
 saveM2:
 
 
-	li $s6, 1 #troca o status de memoria vazia
+	li $s6, 1 # Troca o status de memoria vazia
 	
 	la $a0, strM2 # Print Salvando m2
  	jal printStr 
  	
 	mov.s $f6, $f3
-	li $t5, 0  #troca os status da proxima memória à ser utilizada
+	li $t5, 0  # Troca os status da proxima memória à ser utilizada
 	li $t6, 0
 	li $t7, 1
  	 
 	
 	j MENU_INICIAL
 
-#salva na m3	
+# Salva na m3	
 saveM3:
 
-	li $s7, 1 #troca o status de memoria vazia
+	li $s7, 1 # Troca o status de memoria vazia
 
 	la $a0, strM3 # Print Salvando m3
  	jal printStr 
  	
 	mov.s $f7, $f3
-	li $t5, 1  #troca os status da proxima memória à ser utilizada
+	li $t5, 1  # Troca os status da proxima memória à ser utilizada
 	li $t6, 0
 	li $t7, 0
 	
@@ -237,158 +237,158 @@ saveM3:
 	
 	
 
-#faz a operação de soma e devolve o resultado em F3
+# Faz a operação de soma e devolve o resultado em F3
 ADICAO: 
 	la $a0, strAdicao # Está é uma operação de soma
-	jal printStr # print	
+	jal printStr # Print	
 	
 	
-	la $a0, strN1 	# digite o primeiro num
+	la $a0, strN1 	# Digite o primeiro num
 	jal printStr
-	jal leituraFloat 	#leitura primeiro num (FO)
+	jal leituraFloat 	# Leitura primeiro num (FO)
 	mov.s $f1, $f0		 # F0 -> F1
 	
 	la $a0, strN2
 	jal printStr
-	jal leituraFloat #leitura segundo num
+	jal leituraFloat # Leitura segundo num
 	mov.s $f2, $f0 # F2 -> F0
 	
 	
-	#operação de soma
+	# Operação de soma
 	add.s $f3, $f1, $f2
 	
-	la $a0, strResultado #O resultado é:
+	la $a0, strResultado # O resultado é:
 	jal printStr
 	
 	
-	jal printFloat # print do que está em f3
+	jal printFloat # Print do que está em f3
 	jal ifMemoria
 	
 			
-#faz a operação de subtração e devolve o resultado em F3	
+# Faz a operação de subtração e devolve o resultado em F3	
 SUBTRACAO: 
 	la $a0, strSubtracao # Esta é uma operação de subtração
-	jal printStr # print	
+	jal printStr # Print	
 	
 	
-	la $a0, strN1 #digite o primeiro num
+	la $a0, strN1 # Digite o primeiro num
 	jal printStr
-	jal leituraFloat #leitura primeiro num
+	jal leituraFloat # Leitura primeiro num
 	mov.s $f1, $f0 
 	
 	
-	la $a0, strN2 #digite o segundo num
+	la $a0, strN2 # Digite o segundo num
 	jal printStr
-	jal leituraFloat #leitura segundo num
+	jal leituraFloat # Leitura segundo num
 	mov.s $f2, $f0
 	
-	#opração de subtração
+	# Operação de subtração
 	sub.s $f3, $f1, $f2
 	
-	la $a0, strResultado #O resultado é 
+	la $a0, strResultado # O resultado é 
 	jal printStr
 	jal printFloat
 	
 	jal ifMemoria
 
-#faz a operação de multiplicação e devolve o resultado em F3
+# Faz a operação de multiplicação e devolve o resultado em F3
 MUTIPLICACAO:
 	la $a0, strMultiplicacao # Esta é uma operação de multiplicação
-	jal printStr # print
+	jal printStr # Print
 	
-	la $a0, strN1 #Digite o primeiro num
+	la $a0, strN1 # Digite o primeiro num
 	jal printStr
-	jal leituraFloat #leitura primeiro num
+	jal leituraFloat # Leitura primeiro num
 	mov.s $f1, $f0
 	
-	la $a0, strN2 #Digite o primeiro num
+	la $a0, strN2 # Digite o primeiro num
 	jal printStr
-	jal leituraFloat #leitura segundo num
+	jal leituraFloat # Leitura segundo num
 	mov.s $f2, $f0
 		
-	#op de multiplicação
+	# Op de multiplicação
 	mul.s $f3, $f1, $f2
 	
-	la $a0, strResultado #O resultado é
+	la $a0, strResultado # O resultado é
 	jal printStr
 	jal printFloat
 	
 	jal ifMemoria
 
-#faz a operação de divisão e devolve o resultado em F3	
+# Faz a operação de divisão e devolve o resultado em F3	
 DIVISAO: 
-	la $a0, strDivisao # operação de divisão
-	jal printStr # print	
+	la $a0, strDivisao # Operação de divisão
+	jal printStr # Print	
 	
 	
 	la $a0, strN1 # Digite o primeiro numero
 	jal printStr
-	jal leituraFloat #leitura primeiro num
+	jal leituraFloat # Leitura primeiro num
 	mov.s $f1, $f0
 	
 	la $a0, strN2 # Digite o segundo numero
 	jal printStr
-	jal leituraFloat # leitura segundo num
+	jal leituraFloat # Leitura segundo num
 	mov.s $f2, $f0
 	
-	lwc1 $f8, n0 # carrega 0 em f8
-	c.eq.s $f2, $f8 # verifica se o divisor é zero
-	bc1t  errorDiv # caso 0, pula para o erro
+	lwc1 $f8, n0 # Carrega 0 em f8
+	c.eq.s $f2, $f8 # Verifica se o divisor é zero
+	bc1t  errorDiv # Caso 0, pula para o erro
 	
-	# operação de divisao
+	# Operação de divisao
 	div.s $f3, $f1, $f2
 	
 	
-	la $a0, strResultado # o resultado é
+	la $a0, strResultado # O resultado é
 	jal printStr
 	jal printFloat
 	
 	jal ifMemoria
 	
-# caso 0, erro na divisão	
+# Caso 0, erro na divisão	
 errorDiv:
 	la $a0, strErrorDiv
 	jal printStr
-	j DIVISAO #volta para operação de divisão
+	j DIVISAO # Volta para operação de divisão
 	
-#faz a operação de raiz e devolve o resultado em F3		
+# Faz a operação de raiz e devolve o resultado em F3		
 RAIZ: 
-	la $a0, strRaiz # operação de raiz
-	jal printStr # print	
+	la $a0, strRaiz # Operação de raiz
+	jal printStr # Print	
 	
 	la $a0, strN1 # Digite o primeiro numero
 	jal printStr
-	jal leituraFloat #leitura primeiro num
+	jal leituraFloat # Leitura primeiro num
 	mov.s $f1, $f0
 	
-	lwc1 $f8, n0 # carrega 0 no f10
-	c.lt.s $f1, $f8 #if (F1 < 0)
-	bc1t  errorRaiz # caso < 0, pula para o erro
+	lwc1 $f8, n0 # Carrega 0 no f10
+	c.lt.s $f1, $f8 # if (F1 < 0)
+	bc1t  errorRaiz # Caso < 0, pula para o erro
 	
-	#operação de raiz
+	# Operação de raiz
 	sqrt.s $f3, $f1	
 	
-	la $a0, strResultado # o resultado é
+	la $a0, strResultado # O resultado é
 	jal printStr
 	jal printFloat
 	
 	jal ifMemoria
 	
-# caso < 0, erro na raiz	
+# Caso < 0, erro na raiz	
 errorRaiz:
 	la $a0, strErrorRaiz
 	jal printStr
 	j ifMenu1
 
-#faz a operação de potencia e devolve o resultado em F3
+# Faz a operação de potencia e devolve o resultado em F3
 POTENCIA: 
-	la $a0, strPotencia #Operação de Potencia
-	jal printStr # print	
+	la $a0, strPotencia # Operação de Potencia
+	jal printStr # Print	
 	
 	
 	la $a0, strN1 # Digite o primeiro numero
 	jal printStr
-	jal leituraFloat #leitura primeiro num
+	jal leituraFloat # Leitura primeiro num
 	mov.s $f1, $f0
 	
 	
@@ -400,43 +400,43 @@ POTENCIA:
 	
 	######### OPERAÇÃO DE POTENCIA #####
 	
-	lwc1 $f10, n0	#setando flag expoente negativo false
+	lwc1 $f10, n0	# Setando flag expoente negativo false
 	
-	lwc1 $f3, n1 	#f3 registrador de resultado
+	lwc1 $f3, n1 	# f3 registrador de resultado
 	lwc1 $f7, n1
 	lwc1 $f8, n0
 	
 	
-	c.lt.s  $f2, $f8	# verifica se o expoente <=  0
-	bc1f loop_potencia	# significa que o numero é > 0
+	c.lt.s  $f2, $f8	# Verifica se o expoente <=  0
+	bc1f loop_potencia	# Significa que o numero é > 0
 	
-	c.eq.s  $f2, $f8	# verifica se o expoente é  == 0 caso n^0
+	c.eq.s  $f2, $f8	# Verifica se o expoente é  == 0 caso n^0
 	bc1t  fimPotencia
 	
 	
-	c.lt.s  $f2, $f8	# verifica se o expoente é < 0
+	c.lt.s  $f2, $f8	# Verifica se o expoente é < 0
 	bc1t  flagExpNegativo
 	
 	flagExpNegativo:
 		lwc1 $f10, n1Negativo				 
-		mul.s $f2, $f10, $f2 		#f2  = f2 * -1
-		lwc1 $f10, n1 			#setando flag expoente negativo true
+		mul.s $f2, $f10, $f2 		# f2  = f2 * -1
+		lwc1 $f10, n1 			# Setando flag expoente negativo true
 
 		loop_potencia:
-			# multiplicacao	
-			mul.s $f3, $f3, $f1 #f3 -> F3(resultado) * F1 (primeiro input)
+			# Multiplicacao	
+			mul.s $f3, $f3, $f1 # f3 -> F3(resultado) * F1 (primeiro input)
 			
-			sub.s $f2, $f2, $f7 #f2 ->  f2--;
+			sub.s $f2, $f2, $f7 # f2 ->  f2--;
 		
-			#Se t2 não for 0
+			# Se t2 não for 0
 			c.eq.s $f2, $f8	
 			bc1f loop_potencia
 
 	fimPotencia:
 		
-		#f2 sempre é zero ****
+		# f2 sempre é zero ****
 		
-		c.eq.s  $f10, $f2 		### verificando se a flag é false 
+		c.eq.s  $f10, $f2 		# Verificando se a flag é false 
 		bc1t  resultadoPotencia
 		
 		lwc1 $f2, n1	
@@ -444,33 +444,33 @@ POTENCIA:
 		
 	resultadoPotencia:
 		
-		la $a0, strResultado # resultado potencia
+		la $a0, strResultado # Resultado potencia
 		jal printStr
 		jal printFloat
 		
 	jal ifMemoria
 	
-#faz a operação de fatorial e devolve o resultado em F3		
+# Faz a operação de fatorial e devolve o resultado em F3		
 FATORIAL:
-	la $a0, strFat # operação de fatorial
-	jal printStr # print	
+	la $a0, strFat # Operação de fatorial
+	jal printStr # Print	
 	
 	
 	la $a0, strN1 # Digite o primeiro numero
 	jal printStr
-	jal leituraFloat #leitura primeiro num
+	jal leituraFloat # Leitura primeiro num
 	mov.s $f1, $f0
 	
 	#OPERAÇÃO DE FATORIAl
 	
 	lwc1 $f2, n0
 	
-	c.eq.s $f1, $f2 #compara se a entrada é  (f1 != 0)
+	c.eq.s $f1, $f2 # Compara se a entrada é  (f1 != 0)
 	bc1f fatorialDiferenteDe0
-	lwc1 $f1, n1 # fatorial == 1
+	lwc1 $f1, n1 # Fatorial == 1
 
 fatorialDiferenteDe0:
-	c.lt.s $f1, $f2 #compara se a entrada < 0 
+	c.lt.s $f1, $f2 # Compara se a entrada < 0 
 	bc1t erroFat
 
 	lwc1 $f10, n1
@@ -478,7 +478,7 @@ fatorialDiferenteDe0:
 	mov.s $f2, $f1
 	
 	
-	c.eq.s $f1, $f10 #compara se a entrada é um
+	c.eq.s $f1, $f10 # Compara se a entrada é um
 	bc1t respFatorial
 	
 	
@@ -486,33 +486,33 @@ fatorialDiferenteDe0:
 			sub.s $f2, $f2, $f10
 			mul.s $f3, $f3, $f2
 				
-			c.eq.s $f2, $f10 #compara se o f2 é um
+			c.eq.s $f2, $f10 # Compara se o f2 é um
 			bc1f loop
 	
 	
 	respFatorial:
 		
-	la $a0, strResultado # o Resultado é
+	la $a0, strResultado # O Resultado é
 	jal printStr
 	jal printFloat
 		
 	jal ifMemoria	
 	
-# caso < 0, erro o fatorial
+# Caso < 0, erro o fatorial
 erroFat:
 	la $a0, strErrorFatorial
 	jal printStr
 	j ifMenu1
 
-#faz a operação de fatorial e devolve o resultado em F3	(o último dos resultados (f1 * 10))
+# Faz a operação de fatorial e devolve o resultado em F3 (o último dos resultados (f1 * 10))
 TABUADA:
-	la $a0, strTab # operação de tabuada
-	jal printStr # print	
+	la $a0, strTab # Operação de tabuada
+	jal printStr # Print	
 	
 	
 	la $a0, strN1 # Digite o primeiro numero
 	jal printStr
-	jal leituraFloat #leitura primeiro num
+	jal leituraFloat # Leitura primeiro num
 	mov.s $f1, $f0
 	
 	lwc1 $f10, n1
@@ -520,14 +520,14 @@ TABUADA:
 	lwc1 $f11, n11
 	
 	loop_tab:
-		#OP de multiplicação
+		# OP de multiplicação
 		mul.s $f3, $f2, $f1
 		
 		
-		#Guardando F3 para não perder o valor
+		# Guardando F3 para não perder o valor
 		mov.s $f13, $f3
 		mov.s $f3, $f1
-		#Print de f1
+		# Print de f1
 		jal printFloat
 	
 		
@@ -560,37 +560,37 @@ TABUADA:
 		
 	jal ifMemoria
 	
-#Calcula o intervalo do fibonacci
+# Calcula o intervalo do fibonacci
 FIBONACCI:
-	#Está é uma operação de FIBONACCI
+	# Está é uma operação de FIBONACCI
 	la $a0,strFibo
 	jal printStr
 	
-	#Digite o primeiro numero
+	# Digite o primeiro numero
 	la $a0,strN1
 	jal printStr
 		
-	jal leituraInteiro # leitura do primeiro inteiro em t0
-	move $t1, $t0  # carrega o inteiro lido em $t1
+	jal leituraInteiro # Leitura do primeiro inteiro em t0
+	move $t1, $t0  # Carrega o inteiro lido em $t1
 
-		#Digite o segundo numero
+	# Digite o segundo numero
 	la $a0,strN2
 	jal printStr
 	
-	jal leituraInteiro # leitura do primeiro inteiro em t0
-	move  $t2, $t0  # carrega o inteiro lido em $t2
+	jal leituraInteiro # Leitura do primeiro inteiro em t0
+	move  $t2, $t0  # Carrega o inteiro lido em $t2
 	
-	#int fib0 = 0;
+	# int fib0 = 0;
 	li $t3, 0
 	
-	#int fib1 = 1; 
+	# int fib1 = 1; 
 	li $t4, 1
 	
-	#int aux = 0; 
+	# int aux = 0; 
 	li $a1, 0
 	
 	fibo_loop:
-		blt $t2, $t4, fim_fibonacci # se b > fib0 o laço acaba
+		blt $t2, $t4, fim_fibonacci # Se b > fib0 o laço acaba
 	
 		la $a1, ($t4)     # aux = fib1
 		add $t4, $t4, $t3 # fib1 = fib1 + fib0
@@ -598,13 +598,13 @@ FIBONACCI:
 	
 		bge $t3, $t1, printFibo 
 	
-	j fibo_loop # \Volta para o Loop
+	j fibo_loop # Volta para o Loop
 
 	printFibo:
-		#imprime o que está em t3
+		# Imprime o que está em t3
 		jal printInt
 			
-		#imprime um espaço (" ")
+		# Imprime um espaço (" ")
 		la $a0,msg
 		jal printStr
 			
@@ -614,61 +614,61 @@ fim_fibonacci:
 	jal convert_int_float
 	jal ifMemoria	
 	
-#convert de inteiro para float para salvar na memória
+# Convert de inteiro para float para salvar na memória
 convert_int_float:	
 	sw   $t3, -88($fp)
 	lwc1 $f3, -88($fp)
 	cvt.s.w $f3, $f3
 	jr $ra
 
-#leitura de float no $T1
+# Leitura de float no $T1
 leitura1char:
 	li $v0, 12 # 8 -> leitura de caracter syscall
  	syscall
- 	move $t1, $v0 #move de volta o char para T1
+ 	move $t1, $v0 # Move de volta o char para T1
  	jr $ra 
  
-#leitura de float no $F0
+# Leitura de float no $F0
 leituraFloat:
 	li $v0, 6
  	syscall
  	jr $ra 
  	
- #leitura de Inteiro em T0
+ # Leitura de Inteiro em T0
 leituraInteiro:
 	li $v0, 5 
  	syscall
- 	la  $t0, 0($v0)  # carrega o inteiro lido em $t1
+ 	la  $t0, 0($v0)  # Carrega o inteiro lido em $t1
  	jr $ra 
  	
- #print do que tem no registrador $F3	
+ # Print do que tem no registrador $F3	
 printFloat:
 	mov.s $f12, $f3
 	li $v0, 2
 	syscall 
 	jr $ra
 	
- #print do que tem no registrador $t3	
+ # Print do que tem no registrador $t3	
 printInt:
 	la $a0, ($t3)	
 	li $v0, 1
 	syscall 
 	jr $ra	
  
- #print do que tem no registrador $a0	
+ # Print do que tem no registrador $a0	
 printStr:
 	li $v0, 4 
 	syscall 
 	jr $ra
 	
- #print do que tem no registrador $a0	
+ # Print do que tem no registrador $a0	
 printChar:
 	li $v0, 11 
 	syscall 
 	jr $ra
 	
 	
-#A0 -> t2
+# a0 -> t2
 save$t2$a0:
 	move $t2, $a0   
 	jr $ra
@@ -678,7 +678,8 @@ save$t2$a0:
 save$a0$t2:
 	move $a0, $t2   
 	jr $ra
-	
+
+# Função para finalizar o sistema	
 FIM:
 	li $v0, 10
 	syscall
