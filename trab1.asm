@@ -3,22 +3,6 @@
 # Matheus Sanchez - 9081453
 # Nelson luiz serpa de oliveira - 9793502
 
-
-# Registradores
-#$t1 - Recebe M ou C no inicio das operações, dos registradores de memória e das operações a depender do que foi escolhido pelo usuário
-#$t3 - Recebe um inteiro pra operação a ser realizada
-#$t5, $t6 e $t7 - Recebem os operadores de memória
-#$s5, $s6 e $s7 - Recebem os status das memórias
-
-#$f0 - Recebe o número float como padrão do sistema
-#$f1 - Recebe o primeiro número float
-#$f2 - Recebe o segundo número float nas operações soma, subtração, multiplicação, divisão e potência
-#$f3 - Recebe o resultado das operações soma, subtração, divisão, multiplicação e fatorial
-#$f6 - Recebe uma constante 0, 1 ou 11
-#$f7 - Recebe uma constante 0, 1 ou 11
-#$f8 - Recebe uma constante 0, 1 ou 11
-#$f12 - Recebe o float que vamos imprimir como padrão do sistema
-
 .data
 menuInicial:  .asciiz "\nDigite sua opção(C -> Calculadora | M -> memória):  " 
 strCalculadora: .asciiz "\nVocê está na calculadora ! \nDigite alguma das opções (+ -> SOMA | - -> subtração | / -> DIVISAO | * -> MULTIPLICAÇÃO | R -> Raiz | P -> Potenciação  | T -> TABUADA | F -> FATORIAL |  I -> FIBONACCI |  V -> Voltar |  X -> FIM): " 
