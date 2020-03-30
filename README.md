@@ -1,7 +1,9 @@
 # Assembly-MIPS
-Trabalhos e exercícios da matéria Organização de Computadores
+Trabalhos da matéria Organização de Computadores
 
-# Registradores
+# Registradores usados no trab1.asm
+$t0, $a0, $f0 - Registradores de uso padrão no sistema
+
 $t1 - Recebe M ou C no inicio das operações, dos registradores de memória e das operações a depender do que foi escolhido pelo usuário
 
 $t3 - Recebe um inteiro pra operação a ser realizada
@@ -9,8 +11,6 @@ $t3 - Recebe um inteiro pra operação a ser realizada
 $t5, $t6 e $t7 - Recebem os operadores de memória
 
 $s5, $s6 e $s7 - Recebem os status das memórias
-
-$f0 - Recebe o número float como padrão do sistema
 
 $f1 - Recebe o primeiro número float
 
